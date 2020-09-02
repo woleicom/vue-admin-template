@@ -7,7 +7,7 @@ const Login = () => import(/* webpackChunkName: 'login' */'../views/Login.vue');
 export const routes = [
   {
     path: '/',
-    redirect: '/Index',
+    redirect: '/index',
     component: DefaultLayout,
     children: []
   },

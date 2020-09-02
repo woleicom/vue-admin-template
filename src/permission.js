@@ -41,11 +41,14 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           let res = await sendUserInfo()
+          console.log('userInfo', res)
           if($iscode(res)){
             localStorage.setItem('user', JSON.stringify(res.data));
             store.dispatch('user/setUserInfo',res.data);
             let routesMap = getRoutes(ruleRoutes,res.data.menus)
+            console.log('routesMap',routesMap)
             routes[0].children = routesMap;
+            console.log('routes',routes)
             router.$addRoutes(routes);
             next({ ...to, replace: true })
           }else {
