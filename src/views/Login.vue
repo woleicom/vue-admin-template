@@ -47,7 +47,7 @@
 <script>
 import {mapActions} from 'vuex';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
-import {sendLogin, sendUserInfo} from '../api/login';
+import {sendLogin} from '../api/login';
 import {$iscode} from '../utils/app';
 export default {
   name: 'Login',
@@ -65,24 +65,19 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setUserToken','setUserInfo']),
-    async handleSubmitFinish(values) {
+    ...mapActions(['setUserToken']),
+    async handleSubmitFinish() {
       this.loading = true;
       try{
         let res = await sendLogin({
-          username: values.username,
-          password: values.password,
+          username: this.formModel.username,
+          password: this.formModel.password,
         });
         this.loading = false;
         if($iscode(res,true)){
           localStorage.setItem('token', res.data.token);
           this.setUserToken(res.data.token);
-          res = await sendUserInfo();
-          if($iscode(res)){
-            localStorage.setItem('user', JSON.stringify(res.data));
-            this.setUserInfo(res.data);
-            this.$router.push('/');
-          }
+          this.$router.push('/');
         };
       }catch(e){
         this.loading = false;

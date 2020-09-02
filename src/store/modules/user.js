@@ -21,9 +21,15 @@ const mutations = {
 }
 
 const actions = {
-  setToken({ commit }, token){
+  setUserToken({ commit }, token){
     return new Promise(resolve => {
       commit('SET_USER_TOKEN', token);
+      resolve()
+    })
+  },
+  setUserInfo({ commit }, info){
+    return new Promise(resolve => {
+      commit('SET_USER_INFO', info);
       resolve()
     })
   },

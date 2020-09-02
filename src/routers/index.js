@@ -4,21 +4,12 @@ import DefaultLayout from '../layout/DefaultLayout.vue';
 const View404 = () => import(/* webpackChunkName: '404' */'../views/Others/404.vue');
 const View500 = () => import(/* webpackChunkName: '500' */'../views/Others/500.vue');
 const Login = () => import(/* webpackChunkName: 'login' */'../views/Login.vue');
-const Index = () => import(/* webpackChunkName: 'login' */'../views/Index.vue');
-
-const routes = [
+export const routes = [
   {
     path: '/',
     redirect: '/Index',
     component: DefaultLayout,
-    children: [
-      { path: '/index', name: 'Index',component: Index },
-      { path: '/test/test1', name: 'Test1',component: () => import('../views/Test/Test1') },
-      { path: '/test/test2/test21', name: 'Test21',component: () => import('../views/Test/Test21') },
-      { path: '/test/test2/test22', name: 'Test22',component: () => import('../views/Test/Test22') },
-      { path: '/demo/demo', name: 'Demo',component: () => import('../views/Test/Demo') },
-      { path: '/demo/demo/detail', name: 'Detail',component: () => import('../views/Test/Detail') },
-    ]
+    children: []
   },
   {
     path: '/404',
