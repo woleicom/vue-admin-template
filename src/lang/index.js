@@ -1,4 +1,4 @@
-import VueI18n from 'vue-i18n'
+import {createI18n, useI18n as use} from 'vue-i18n'
 import enLocale from './en_US'
 import zhLocale from './zh_CN'
 import antdZhCN from 'ant-design-vue/es/locale-provider/zh_CN';
@@ -17,12 +17,10 @@ const messages = {
 export function getLanguage() {
   return 'zh'
 }
-const i18n = new VueI18n({
-  // set locale
+const i18n = createI18n({
   // options: en | zh | es
   locale: getLanguage(),
-  // set locale messages
-  messages
+  messages:messages
 })
-// TODO vue-i18n暂不支持vue3.0 
+export let useI18n = use;
 export default i18n

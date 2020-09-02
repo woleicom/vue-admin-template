@@ -31,7 +31,7 @@ const routes = [
     component: View500
   },
   {
-    path: '/500',
+    path: '/login',
     name: 'Login',
     component: Login
   },

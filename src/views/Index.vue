@@ -1,14 +1,20 @@
 <template>
   <div class="home">
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
+    123
     <a-button type="primary">
-    {$t('welcome')}
+    {{t('welcome')}}
   </a-button>
   </div>
 </template>
 
 <script>
+import t from '../lang/t'
 export default {
   name: 'Home',
+  data(){
+    return {
+      t:t
+    }
+  }
 }
 </script>
