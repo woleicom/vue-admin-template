@@ -27,29 +27,24 @@ const getRoutes = (routeList,menuTree) => {
 const whiteList = ['/login'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
-  console.log(store);
   const userToken = localStorage.getItem('token');
   if (userToken) {
     // 有token
     // 路径为登录页则跳转到首页
     if (to.path === '/login') {
-      next({ path: '/' })
+      next({ path: '/index' })
     } else {
-      let userInfo = JSON.parse(localStorage.getItem('user'));
+      let userInfo = store.state.user.info;
       if (userInfo && userInfo.menus && userInfo.menus.length>0) {
+        console.log(to.path)
         next()
       } else {
         try {
           let res = await sendUserInfo()
-          console.log('userInfo', res)
           if($iscode(res)){
-            localStorage.setItem('user', JSON.stringify(res.data));
             store.dispatch('user/setUserInfo',res.data);
             let routesMap = getRoutes(ruleRoutes,res.data.menus)
-            console.log('routesMap',routesMap)
-            routes[0].children = routesMap;
-            console.log('routes',routes)
-            router.$addRoutes(routes);
+            router.$addRoutes(routesMap);
             next({ ...to, replace: true })
           }else {
             next(`/login`)

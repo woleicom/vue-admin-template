@@ -8,6 +8,7 @@ export const routes = [
   {
     path: '/',
     redirect: '/index',
+    name: 'Root',
     component: DefaultLayout,
     children: []
   },
@@ -25,7 +26,7 @@ export const routes = [
     path: '/login',
     name: 'Login',
     component: Login
-  },
+  }
 ]
 const mode = 'history';
 const router = createRouter({
@@ -53,8 +54,21 @@ router.$resetRouter = () => {
   const newRouter = createRouter();
   router.matcher = newRouter.matcher // reset router
 }
+router.$removeRoute = (name) => {
+  router.removeRoute(name);
+};
 router.$addRoutes = (params) => {
-  router.matcher = createRouter({mode: mode}).matcher;
-  router.addRoutes(params);
+  params.forEach((route)=>{
+    router.addRoute('Root', route);
+  })
+  if(router.hasRoute('Redirect')) {
+    router.removeRoute('Redirect');
+  }
+  // 匹配所以重定向最后添加
+  router.addRoute( {
+    path: "/:pathMatch(.*)",
+    name: 'Redirect',
+    redirect: '/index'
+  });
 };
 export default router
