@@ -5,8 +5,15 @@
     <a-layout
       :style="{marginLeft: menuToggle ? '80px' : '200px', minHeight: '100vh'}"
     >
-      <app-header></app-header>
-      <a-layout-content>
+      <app-header
+        :breadCrumb='breadCrumb' 
+        :menuToggle='menuToggle'
+        :menuClick='menuClick' 
+        :language='language'
+        :toggleLanguage='toggleLanguage' 
+        :avatar='avatar' :loginOut='loginOut'
+      ></app-header>
+      <a-layout-content class="content">
         <router-view :key="key" />
       </a-layout-content>
       <app-footer></app-footer>
@@ -21,6 +28,9 @@ import {mapState} from 'vuex'
 import AppAside from './AppAside'
 import AppHeader from './AppHeader'
 import AppFooter from './AppFooter'
+import avatar from '@/assets/images/user.png'
+import {sendLogout} from '@/api/login';
+import {$iscode} from '@/utils/app';
 //返回除了首页之外的面包屑
 const getBreadCrumb = (pathname,menuTree,crumb) => {
   // 首页返回false
@@ -59,20 +69,43 @@ export default {
     },
     ...mapState({
       menu: state => state.user.info.menus,
+      menuToggle: state=>state.app.menuToggle,
+      language: state=> state.app.language
     }),
     breadCrumb() {
       let breadCrumb = [];
       getBreadCrumb(this.$route.path,this.menu,breadCrumb);
       return breadCrumb;
-    }
+    },
   },
   data() {
     return {
-      menuToggle: false,
-      
+      avatar,
     }
   },
   mounted() {
+  },
+  methods: {
+    menuClick() {
+      this.$store.dispatch('app/setAppMenuToggle',!this.menuToggle);
+    },
+    toggleLanguage(lang){
+      this.$store.dispatch('app/setAppLanguage',lang);
+    },
+    async loginOut() {
+      try{
+      let res = await sendLogout();
+      if($iscode(res,true)){
+        localStorage.clear();
+        this.$router.push('/login');
+      }
+    }catch(e){
+      localStorage.clear();
+      this.$router.push('/login');
+    }
+    }
+  },
+  watch: {
   }
 }
 </script>

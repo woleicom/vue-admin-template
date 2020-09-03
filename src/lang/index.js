@@ -3,21 +3,28 @@ import enLocale from './en_US'
 import zhLocale from './zh_CN'
 import antdZhCN from 'ant-design-vue/es/locale-provider/zh_CN';
 import antdEnUS from 'ant-design-vue/es/locale-provider/en_US';
-
-const messages = {
+import moment from 'moment';
+import monentZhCN from 'moment/locale/zh-cn.js';
+export const messages = {
   en: {
     ...enLocale,
-    ...antdZhCN
+    ...antdEnUS,
+    ...monentZhCN,
   },
   zh: {
     ...zhLocale,
-    ...antdEnUS
+    ...antdZhCN,
   },
 }
 export function getLanguage() {
-  return 'zh'
+  return 'en'
 }
+export const langKeys = [
+  {value:'zh',label:'简体中文'},
+  {value:'en',label:'English'},
+]
 const i18n = createI18n({
+  // legacy: true,
   // options: en | zh | es
   locale: getLanguage(),
   messages:messages

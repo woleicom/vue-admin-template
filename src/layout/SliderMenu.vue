@@ -1,8 +1,9 @@
 <template>
   <a-menu
+    :inline-collapsed='menuToggle'
+    :openKeys='openKeys'
     mode='inline'
     :theme='theme'
-    :openKeys='openKeys'
     :selectedKeys='selectedKeys'
     @click='onSelectChange'
     @openChange='onOpenChange'
@@ -73,6 +74,7 @@ export default {
   data(){
     return {
       openKeys:[],
+      prevOpenKeys:[],
       selectedKeys:[],
     }
   },
@@ -81,18 +83,27 @@ export default {
     this.selectedKeys = [getPathName(this.$route.path, this.menu)];
   },
   watch:{
+    menuToggle(newVal) {
+      if (newVal) {
+        this.prevOpenKeys = this.openKeys;
+        this.openKeys = [];
+      } else {
+        this.openKeys = this.prevOpenKeys;
+      }
+    },
     '$route'(newVal){
       this.openKeys = getOpenKeys(newVal.path);
-      this.selectedKeys = getPathName(this.$route.path, this.menu);
+      this.selectedKeys = [getPathName(this.$route.path, this.menu)];
     },
     'menu'(newVal){
-      this.selectedKeys = getPathName(this.$route.path, newVal);
+      this.selectedKeys = [getPathName(this.$route.path, newVal)];
     }
   },
   methods: {
     onOpenChange(v) {
       if (v.length === 0 || v.length === 1) {
           this.openKeys = v;
+          return void 0;
       }
       const latestOpenKey = v[v.length - 1]
       // 这里与定义的路由规则有关

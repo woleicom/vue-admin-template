@@ -1,7 +1,7 @@
 <template>
-  <div>
-    Test22
-  </div>
+  <a-layout class='index animated fadeIn'>
+    test22
+  </a-layout>
 </template>
 <script>
 export default {

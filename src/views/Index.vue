@@ -1,10 +1,8 @@
 <template>
-  <div class="home">
-    123
-    <a-button type="primary">
+  <a-layout class='index animated fadeIn'>
     {{t('welcome')}}
-  </a-button>
-  </div>
+     <a-datePicker :style="{width:'200px'}"/>
+  </a-layout>
 </template>
 
 <script>
@@ -13,8 +11,10 @@ export default {
   name: 'Home',
   data(){
     return {
-      t:t
+      t
     }
+  },
+  mounted(){
   }
 }
 </script>
