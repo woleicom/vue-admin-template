@@ -11,7 +11,6 @@
 </template>
 <script>
 export default {
-  name: 'HeaderBreadcrumb',
   props: {
     arr: {
       type:Array,
@@ -20,10 +19,8 @@ export default {
       }
     }
   },
-  data(){
-    return {
-      
-    }
+  setup (props) {
+    
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <a-menu
     :inline-collapsed='menuToggle'
-    :openKeys='openKeys'
+    v-model:openKeys='openKeys'
     mode='inline'
     :theme='theme'
     :selectedKeys='selectedKeys'
@@ -74,7 +74,6 @@ export default {
   data(){
     return {
       openKeys:[],
-      prevOpenKeys:[],
       selectedKeys:[],
     }
   },
@@ -85,10 +84,10 @@ export default {
   watch:{
     menuToggle(newVal) {
       if (newVal) {
-        this.prevOpenKeys = this.openKeys;
         this.openKeys = [];
       } else {
-        this.openKeys = this.prevOpenKeys;
+        this.openKeys = getOpenKeys(this.$route.path);
+        this.selectedKeys = [getPathName(this.$route.path, this.menu)];
       }
     },
     '$route'(newVal){

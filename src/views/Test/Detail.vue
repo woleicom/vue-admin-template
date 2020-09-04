@@ -6,6 +6,8 @@
 </template>
 <script>
 export default {
-  name: 'Detail',
+  setup() {
+    //pass
+  }
 }
 </script>
