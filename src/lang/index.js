@@ -17,7 +17,7 @@ export const messages = {
   },
 }
 export function getLanguage() {
-  return 'en'
+  return 'zh'
 }
 export const langKeys = [
   {value:'zh',label:'简体中文'},

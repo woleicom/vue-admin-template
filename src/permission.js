@@ -36,7 +36,6 @@ router.beforeEach(async(to, from, next) => {
     } else {
       let userInfo = store.state.user.info;
       if (userInfo && userInfo.menus && userInfo.menus.length>0) {
-        console.log(to.path)
         next()
       } else {
         try {
