@@ -5,6 +5,10 @@
 ##### 搭建不易，喜欢可以star
 ##### 如果喜欢react建议参考项目:[woleicom/react-admin-template](https://github.com/woleicom/react-admin-template)
 -----------
+### 感谢：
+- [Vue 3](https://v3.vuejs.org/)
+- [Ant Design Vue 2](https://2x.antdv.com/)
+-----------
 ### 优化内容（所有依赖库基于2020年第二季度最新包版本）
 - .eslintrc配置eslint规则
 - .babelrc配置babel配置
