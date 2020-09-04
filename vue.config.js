@@ -1,3 +1,5 @@
+'use strict';
+const EndWebpackPlugin = require('./plugins/webpack.end.js');
 module.exports = {
   devServer: {
     proxy: {
@@ -9,15 +11,15 @@ module.exports = {
       },
     }
   },
-  configureWebpack: {
-    // provide the app's title in webpack's name field, so that
-    // it can be accessed in index.html to inject the correct title.
-    /* resolve: {
-      alias: {
-        '@': resolve('src'),
-        'assets': resolve('src/assets')
-      }
-    } */
+  configureWebpack: config => {
+    if (process.env.ENV === 'production') {
+      config.plugins.push(new EndWebpackPlugin('dist','项目名称'))
+    }
+  },
+  chainWebpack: (config) => {
+    // config.resolve.alias
+    //   .set('@', resolve('src')) 
+    //   .end();
   },
   css: {
     loaderOptions: {

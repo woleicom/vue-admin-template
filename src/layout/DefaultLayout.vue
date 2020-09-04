@@ -14,7 +14,7 @@
         :avatar='avatar' :loginOut='loginOut'
       ></app-header>
       <a-layout-content class="content">
-        <router-view :key="key" />
+        <router-view :key="key"/>
       </a-layout-content>
       <app-footer></app-footer>
     </a-layout>

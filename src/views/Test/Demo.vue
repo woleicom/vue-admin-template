@@ -46,6 +46,9 @@
   </a-layout>
 </template>
 <script>
+import {ref,onMounted} from 'vue';
+import {message} from 'ant-design-vue'
+import {getRouter} from '@/utils/app'
 import {setPageState,getPageState} from '@/utils/pageState'
 import {getList} from '@/api/demo'
 import {$iscode} from '@/utils/app'
@@ -62,95 +65,113 @@ export default {
   components: {
     AddModal
   },
-  data() {
-    return {
-      search:{...defSearch},
-      total: 0,
-      listLoading:false,
-      columns: [
-        {
-          title: 'ID',
-          dataIndex: 'id',
-          key: 'id',
-        },
-        {
-          title: '姓名',
-          dataIndex: 'name',
-          key: 'name',
-        },
-        {
-          title: '年龄',
-          dataIndex: 'age',
-          key: 'age',
-        },
-        {
-          title: '地址',
-          dataIndex: 'address',
-          key: 'address',
-        },
-        {
-          title: '操作',
-          key: 'action',
-          customRender: (text, record) => (
+  setup(props) {
+    const AddModal = ref(null)
+    // // 初始化 分页信息和筛选项信息
+    let total = ref(0);
+    let search = ref({...defSearch});
+    // 列表数据和列头配置
+    let data = ref([])
+    let listLoading = ref(false);
+    let columns = [{
+        title: 'ID',
+        dataIndex: 'id',
+        key: 'id',
+      },
+      {
+        title: '姓名',
+        dataIndex: 'name',
+        key: 'name',
+      },
+      {
+        title: '年龄',
+        dataIndex: 'age',
+        key: 'age',
+      },
+      {
+        title: '地址',
+        dataIndex: 'address',
+        key: 'address',
+      },
+      {
+        title: '操作',
+        key: 'action',
+        customRender: function (text, record) {
+          return (
             <span>
-              <a-button type="link" onClick={this.pageLinkChange} block>详情</a-button>
+              <a-button type="link" onClick={pageLinkChange} block>详情</a-button>
             </span>
-          ),
+          )
         },
-      ],
-      data: []
-    }
-  },
-  mounted() {
-    let pageState = getPageState(this.$router.path);
-    if(pageState) {
-      this.search = Object.assign(this.search, pageState);
-    }
-    this.initData(this.search);
-  },
-  methods: {
-    actionAddModel() {
-      this.$refs['AddModal'].heandleOpen({title: '添加'}).then((res)=>{
-        this.data = [res,...this.data.slice(0,-1)]
-      },()=>{})
-    },
-    // 页面筛选项搜索
-    pageSearchChange() {
-      this.search = {...this.search, page: 1}
-      this.initData(this.search);
-    },
-    // 页面筛选项重置
-    pageSearchReset() {
-      this.search = {...defSearch, page: this.search.page, size: this.search.size}
-    },
-    // 分页当前页切换
-    pageCurrentChange(page, pageSize) {
-      this.search.page = page;
-      this.initData(this.search);
-    },
-    pageSizeChange(current, size) {
-      this.search.size = size;
-      this.initData(this.search);
-    },
+      },
+    ]
     // 页面跳转
-    pageLinkChange() {
-      setPageState(this.$router.path,{...this.search})
-      this.$router.push({ path : '/demo/demo/detail' });
-    },
-    async initData(data) {
-      this.listLoading = true;
+    const pageLinkChange = () => {
+      setPageState(getRouter().route.path,{...search.value})
+      getRouter().router.push('/demo/demo/detail');
+    }
+    // 页面筛选项搜索
+    const pageSearchChange = () => {
+      search.value = {...search.value, page: 1}
+      initData(search.value);
+    }
+    // 页面筛选项重置
+    const pageSearchReset = () => {
+      search.value = {...defSearch, page: search.value.page, size: search.value.size}
+    }
+    // 分页当前页切换
+    const pageCurrentChange = (page, pageSize) => {
+      search.value.page = page;
+      initData(search.value);
+    }
+    // 分页当前页显示多少条切换
+    const pageSizeChange = (current, size) => {
+      search.value.page = 1;
+      search.value.size = size;
+      initData(search.value);
+    }
+    const actionAddModel = () => {
+      AddModal.value.heandleOpen({title: '添加'}).then((res)=>{
+        data.value = [res,...data.value.slice(0,-1)]
+      },()=>{})
+    }
+
+    const initData = async (values) => {
+      listLoading.value = true;
       try {
-        let res = await getList(data);
-        this.listLoading = false;
+        let res = await getList(values);
+        listLoading.value = false;
         if ($iscode(res)) {
-          this.data = res.data;
-          this.total = res.total;
+          data.value = res.data;
+          total.value = res.total;
         } else {
-          this.$message.error(res.message)
+          message.error(res.message)
         }
       } catch (e) {
-        this.listLoading = false;
+        listLoading.value = false;
       }
+    }
+
+    onMounted(() => {
+      // 查看是否有留存状态，有则替换
+      let pageState = getPageState(getRouter().route.path);
+      if(pageState) {
+        search.value = Object.assign(search.value, pageState);
+      }
+      initData(search.value);
+    })
+    return {
+      total,
+      search,
+      data,
+      listLoading,
+      columns,
+      pageLinkChange,
+      pageSearchChange,
+      pageSearchReset,
+      pageCurrentChange,
+      pageSizeChange,
+      actionAddModel
     }
   }
 }

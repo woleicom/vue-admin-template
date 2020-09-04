@@ -6,11 +6,15 @@
 <script>
 import {mapState} from 'vuex';
 import {messages} from '@/lang/index';
+import {setRouter} from '@/utils/app';
 export default {
   name: 'App',
   data() {
     return {
     }
+  },
+  mounted() {
+    setRouter(this.$router,this.$route);
   },
   computed: {
     ...mapState({

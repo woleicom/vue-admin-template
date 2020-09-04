@@ -68,8 +68,10 @@
 }
 </style>
 <script>
+import {ref} from 'vue'
 import {addDemo} from '@/api/demo'
 import {$iscode} from '@/utils/app'
+import {message} from 'ant-design-vue'
 let defInfo = {
   name: '',
   age: '',
@@ -77,63 +79,68 @@ let defInfo = {
 }
 export default {
   name: 'AddModal',
-  props: {
-  },
-  data() {
-    return {
-      layout: {
-        labelCol: {
-          style:{flex:'0 0 100px'},
-        },
-        wrapperCol: {
-          style:{flex:'auto'},
-        }
+  setup(props,context) {
+    let layout = {
+      labelCol: {
+        style:{flex:'0 0 100px'},
       },
-      visible: false,
-      $pro: null,
-      title: '',
-      info: {},
-      loading: false,
+      wrapperCol: {
+        style:{flex:'auto'},
+      }
     }
-  },
-  methods: {
-    heandleOpen(data) {
+    let visible = ref(false);
+    let title = ref('');
+    let info = ref({...defInfo});
+    let loading = ref(false);
+    let $pro;
+
+    let heandleOpen = (data) => {
       let pro_res, pro_rej;
-      this.$pro = new Promise((resolve, reject)=>{
+      $pro = new Promise((resolve, reject)=>{
         pro_res = resolve;
         pro_rej = reject;
       });
-      this.$pro.pro_res = pro_res;
-      this.$pro.pro_rej = pro_rej;
+      $pro.pro_res = pro_res;
+      $pro.pro_rej = pro_rej;
 
-      this.title = data.title;
-      this.info = {...defInfo};
-      this.visible = true;
-      return this.$pro;
-    },
-    async onOk() {
-      this.loading = true;
+      title.value = data.title;
+      info.value = {...defInfo};
+      visible.value = true;
+      return $pro;
+    }
+    let onOk =async() => {
+      loading.value = true;
       try {
-        let res = await addDemo(this.info);
+        let res = await addDemo(info.value);
         if ($iscode(res, true)){
-          this.$pro.pro_res(res.data)
-          this.visible = false;
+          $pro.pro_res(res.data)
+          visible.value = false;
         } else {
           //pass
         }
-        this.loading = false;
+        loading.value = false;
       }catch(e){
-        this.loading = false;
+        loading.value = false;
         //pass
       }
-    },
-    onCancel() {
-      if (this.loading) {
-        this.$message.warning('请等待加载完成')
+    }
+    let onCancel = () => {
+      if (loading.value) {
+        message.warning('请等待加载完成')
         return void 0;
       }
-      this.$pro.pro_rej(false)
-      this.visible = false;
+      $pro.pro_rej(false)
+      visible.value = false;
+    }
+    return {
+      layout,
+      visible,
+      title,
+      info,
+      loading,
+      heandleOpen,
+      onOk,
+      onCancel
     }
   }
 }
