@@ -34,6 +34,8 @@ npm run build:prod
 npm run build
 ```
 -------------
+##### 登录账号：admin/密码随便填 或 账号随便填/密码随便填  （两个账号权限不一样）
+##### 只有views/Demo.vue 和 views/Detail.vue 语法用了Composition API
 ### 展示
 ![登录页](./note/vue0.png)
 ![首页](./note/vue1.png)
