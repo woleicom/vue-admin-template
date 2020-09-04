@@ -33,3 +33,7 @@ npm run build:prod
 //打包正式环境
 npm run build
 ```
+-------------
+### 展示
+![登录页](./note/vue0.png)
+![首页](./note/vue1.png)

@@ -10,6 +10,7 @@
           @finishFailed='handleSubmitFinishFailed'
         >
           <a-form-item
+            name='username'
             :rules="[{ required: true, message: '请输入用户名' }]"
           >
             <a-input v-model:value="formModel.username" placeholder='用户名'>
@@ -19,6 +20,7 @@
             </a-input>
           </a-form-item>
           <a-form-item
+            name='password'
             :rules="[{ required: true, message: '请输入密码' }]"
           >
             <a-input-password v-model:value="formModel.password" placeholder="密码">
