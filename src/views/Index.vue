@@ -50,7 +50,7 @@ export default {
         },
       ],
     });
-    const { resetFields, validate, validateInfos, mergeValidateInfo } = useForm(modelRef, rulesRef, {deep: true});
+    const { resetFields, validate, validateInfos, mergeValidateInfo } = useForm(modelRef, rulesRef);
     const onSubmit = e => {
       e.preventDefault();
       validate()
