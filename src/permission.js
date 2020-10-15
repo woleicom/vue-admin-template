@@ -41,6 +41,7 @@ router.beforeEach(async(to, from, next) => {
         try {
           let res = await sendUserInfo()
           if($iscode(res)){
+            console.table(res.data.menus);
             store.dispatch('user/setUserInfo',res.data);
             let routesMap = getRoutes(ruleRoutes,res.data.menus)
             router.$addRoutes(routesMap);
