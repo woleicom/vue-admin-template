@@ -46,14 +46,12 @@ router.beforeEach(async(to, from, next) => {
             router.$addRoutes(routesMap);
             next({ ...to, replace: true })
           }else {
+            localStorage.clear();
             next(`/login`)
           }
         } catch (error) {
-          await store.dispatch('user/setUserToken','')
-          await store.dispatch('user/setUserInfo',null)
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
           message.error(error || 'Has Error')
+          localStorage.clear();
           next(`/login`)
         }
       }
@@ -67,6 +65,11 @@ router.beforeEach(async(to, from, next) => {
   }
 })
 
-router.afterEach(() => {
+router.afterEach(async(to, from) => {
   // finish progress bar
+  if (to.path === '/login') {
+    // 跳转登录页清除仓库用户信息，token取自localStorage，需要先行删除
+    await store.dispatch('user/setUserToken','')
+    await store.dispatch('user/setUserInfo',null)
+  }
 })

@@ -31,6 +31,7 @@ import AppFooter from './AppFooter'
 import avatar from '@/assets/images/user.png'
 import {sendLogout} from '@/api/login';
 import {$iscode} from '@/utils/app';
+import { nextTick } from 'vue'
 //返回除了首页之外的面包屑
 const getBreadCrumb = (pathname,menuTree,crumb) => {
   // 首页返回false
@@ -94,15 +95,15 @@ export default {
     },
     async loginOut() {
       try{
-      let res = await sendLogout();
-      if($iscode(res,true)){
+        let res = await sendLogout();
+        if($iscode(res,true)){
+          localStorage.clear();
+          this.$router.push('/login');
+        }
+      }catch(e){
         localStorage.clear();
         this.$router.push('/login');
       }
-    }catch(e){
-      localStorage.clear();
-      this.$router.push('/login');
-    }
     }
   },
   watch: {
