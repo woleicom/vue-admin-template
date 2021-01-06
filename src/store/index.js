@@ -1,20 +1,34 @@
-import { createStore } from 'vuex'
-const modulesFiles = require.context('./modules', true, /\.js$/)
-// you do not need `import app from './modules/app'`
-// it will auto require all vuex module from modules file
-const modules = modulesFiles.keys().reduce((modules, modulePath) => {
-  // set './app.js' => 'app'
-  const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1')
-  const value = modulesFiles(modulePath)
-  modules[moduleName] = value.default
-  return modules
-}, {})
-export default createStore({
-  state: {
+import {reactive} from 'vue';
+import { getLanguage } from '@/lang/index'
+export default {
+  state: reactive({
+    app: {
+      language: getLanguage(),
+      menuToggle: false,
+    },
+    user: {
+      token:'',
+      info: {}
+    }
+  }),
+  setAppLanguage(language) {
+    this.state.app.language = language;
   },
-  mutations: {
+  setAppMenuToggle(toggle) {
+    this.state.app.menuToggle = toggle;
   },
-  actions: {
+  setUserToken(token){
+    if(token){
+      this.state.user.token = token;
+    }else{
+      this.state.user.token = ''
+    }
   },
-  modules: modules
-})
+  setUserInfo(info) {
+    if(info){
+      this.state.user.info = info;
+    }else{
+      this.state.user.info = {}
+    }
+  },
+}

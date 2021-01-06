@@ -4,7 +4,7 @@
   </a-config-provider>
 </template>
 <script>
-import {mapState} from 'vuex';
+import store from './store';
 import {messages} from '@/lang/index';
 import {setRouter} from '@/utils/app';
 export default {
@@ -17,9 +17,9 @@ export default {
     setRouter(this.$router,this.$route);
   },
   computed: {
-    ...mapState({
-      language: state=> state.app.language
-    }),
+    language() {
+      return store.state.app.language
+    },
     locale() {
       if (messages[this.language]) {
         return messages[this.language]

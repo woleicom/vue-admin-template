@@ -24,7 +24,7 @@
 @import '../style/layout.less';
 </style>
 <script>
-import {mapState} from 'vuex'
+import store from '../store';
 import AppAside from './AppAside'
 import AppHeader from './AppHeader'
 import AppFooter from './AppFooter'
@@ -68,11 +68,15 @@ export default {
     key() {
       return this.$route.path
     },
-    ...mapState({
-      menu: state => state.user.info.menus,
-      menuToggle: state=>state.app.menuToggle,
-      language: state=> state.app.language
-    }),
+    menu() {
+      return store.state.user.info.menus
+    },
+    menuToggle() {
+      return store.state.app.menuToggle
+    },
+    language() {
+      return store.state.app.language
+    },
     breadCrumb() {
       let breadCrumb = [];
       getBreadCrumb(this.$route.path,this.menu,breadCrumb);

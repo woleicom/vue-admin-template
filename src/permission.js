@@ -41,11 +41,11 @@ router.beforeEach(async(to, from, next) => {
         try {
           let res = await sendUserInfo()
           if($iscode(res)){
-            console.table(res.data.menus);
-            store.dispatch('user/setUserInfo',res.data);
+            store.setUserInfo(res.data);
             let routesMap = getRoutes(ruleRoutes,res.data.menus)
             router.$addRoutes(routesMap);
-            next({ ...to, replace: true })
+            console.log('login');
+            next({ ...to, replace: true });
           }else {
             localStorage.clear();
             next(`/login`)
@@ -70,7 +70,7 @@ router.afterEach(async(to, from) => {
   // finish progress bar
   if (to.path === '/login') {
     // 跳转登录页清除仓库用户信息，token取自localStorage，需要先行删除
-    await store.dispatch('user/setUserToken','')
-    await store.dispatch('user/setUserInfo',null)
+    store.setUserToken('');
+    store.setUserInfo(null);
   }
 })

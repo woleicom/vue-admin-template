@@ -47,7 +47,7 @@
 @import '../style/views/login.less';
 </style>
 <script>
-import {mapActions} from 'vuex';
+import store from '../store';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import {sendLogin} from '../api/login';
 import {$iscode} from '../utils/app';
@@ -67,7 +67,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setUserToken']),
+    setUserToken(token) {
+      store.setUserToken(token);
+    },
     async handleSubmitFinish() {
       this.loading = true;
       try{
