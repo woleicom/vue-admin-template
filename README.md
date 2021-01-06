@@ -1,5 +1,5 @@
 # vue开发脚手架二次开发后台管理系统模板
-#### 简介： Vue 3.x、Ant Design Vue 2.x、国际化、router、vuex、ui仿antd-admin-pro、动态路由、动态菜单权限、页面状态缓存
+#### 简介： Vue 3.x、Ant Design Vue 2.x、国际化、router、ui仿antd-admin-pro、动态路由、动态菜单权限、页面状态缓存
 ## 作者： 月下独奏
 ### [更新日志](./note/updatelog.md)
 ##### 搭建不易，喜欢可以star
@@ -20,7 +20,6 @@
 - UI参考antd admin pro
 - 集成vue-router-next,并根据角色自动配置菜单和路由权限（权限在api中前端设置的测试数据）
 - 导航面包屑根据用户菜单自动获取，不在放到页面手动配置。
-- 集成vuex
 - 增加utils/pageState缓存页面状态全局变量工具，没有存储storage，刷新无效
 - 集成i18n国际化（使用vue-i18n-next集成国际化，导航头切换语言，首页查看效果）
 
