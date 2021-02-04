@@ -11,10 +11,10 @@
     <template v-for='(item) of menu'>
       <sub-menu 
         v-if="item.subs && item.subs.length > 0 && item.subs.filter(v=>v.hidden).length!==item.subs.length" 
-        :key='item.key' 
+        :key='item.name' 
         :item='item'
       ></sub-menu>
-      <menu-item v-else :key='item.key' :item='item'></menu-item>
+      <menu-item v-else :key='item.name' :item='item'></menu-item>
     </template>
   </a-menu>
 </template>
@@ -22,37 +22,42 @@
 import {clearPageState} from '../utils/pageState'
 import MenuItem from './MenuItem.vue'
 import SubMenu from './SubMenu.vue'
-const getOpenKeys = string => {
-    let newStr = '',
-        newArr = [],
-        arr = string.split('/').map(i => '/' + i)
-    for (let i = 1; i < arr.length - 1; i++) {
-        newStr += arr[i]
-        newArr.push(newStr)
-    }
-    return newArr
-}
-const getPathName = (pathname, menuTree,parentPath) => {
-    for(let i = 0; i < menuTree.length; i++){
-        //路径包含
-        if(pathname.search(menuTree[i].key) === 0){
-            //路径相等
-            if(pathname === menuTree[i].key){
-                //隐藏菜单去父路径
-                if(menuTree[i].hidden){
-                    return parentPath;
-                }else {
-                    return menuTree[i].key
-                }
-            } else if (menuTree[i].subs && menuTree[i].subs.length>0) {
-                let str = getPathName(pathname, menuTree[i].subs ,menuTree[i].key);
-                if(str !== ''){
-                    return str;
-                }
-            }
+const getPathName = (pathname, menuTree,parentName) => {
+  for(let i = 0; i < menuTree.length; i++){
+    //路径包含
+    if (menuTree[i].key) {
+      //路径相等
+      if(pathname === menuTree[i].key){
+        //隐藏菜单去父路径
+        if(menuTree[i].hidden){
+          return parentName;
+        }else {
+          if (parentName) {
+            return menuTree[i].name
+          } else {
+            return {
+              opens: [],
+              select: menuTree[i].name
+            };
+          }
         }
+      }
     }
-    return ''
+    if (menuTree[i].subs && menuTree[i].subs.length>0) {
+      let str = getPathName(pathname, menuTree[i].subs , menuTree[i].name);
+      if(typeof str == 'object'){
+        return {
+          opens: str.opens.concat([menuTree[i].name]),
+          select: str.select
+        };
+      } else if (typeof str == 'string') {
+        return {
+          opens: [menuTree[i].name],
+          select: str
+        };
+      }
+    }
+  }
 }
 export default {
   name: 'SliderMenu',
@@ -78,24 +83,29 @@ export default {
     }
   },
   mounted() {
-    this.openKeys = getOpenKeys(this.$route.path);
-    this.selectedKeys = [getPathName(this.$route.path, this.menu)];
+    let d = getPathName(this.$route.path, this.menu);
+    this.openKeys = d.opens;
+    this.selectedKeys = [d.select];
   },
   watch:{
     menuToggle(newVal) {
       if (newVal) {
         this.openKeys = [];
       } else {
-        this.openKeys = getOpenKeys(this.$route.path);
-        this.selectedKeys = [getPathName(this.$route.path, this.menu)];
+        let d = getPathName(this.$route.path, this.menu);
+        this.openKeys = d.opens;
+        this.selectedKeys = [d.select];
       }
     },
     '$route'(newVal){
-      this.openKeys = getOpenKeys(newVal.path);
-      this.selectedKeys = [getPathName(this.$route.path, this.menu)];
+      let d = getPathName(this.$route.path, this.menu);
+      this.openKeys = d.opens;
+      this.selectedKeys = [d.select];
     },
     'menu'(newVal){
-      this.selectedKeys = [getPathName(this.$route.path, newVal)];
+      let d = getPathName(this.$route.path, this.menu);
+      this.openKeys = d.opens;
+      this.selectedKeys = [d.select];
     }
   },
   methods: {

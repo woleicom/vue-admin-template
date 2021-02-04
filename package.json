@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:stag": "vue-cli-service build --mode staging",
+    "build:test": "vue-cli-service build --mode test",
+    "deploy:test": "npm run build:test && dotenv -e .env.test node ./deploy",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -33,6 +34,10 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
     "less": "^3.0.4",
+    "scp2": "^0.5.0",
+    "dotenv-cli": "^4.0.0",
+    "ora": "^5.3.0",
+    "chalk": "^4.1.0",
     "less-loader": "6.0.0"
   }
 }

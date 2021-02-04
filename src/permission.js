@@ -9,20 +9,21 @@ import {$iscode} from './utils/app';
 //转化当前用户导航菜单权限tree为一维数组list
 const getMenuList = (menuTree,menuList) => {
   for(let i = 0; i< menuTree.length; i++){
-    menuList.push(menuTree[i]);
+    let route = ruleRoutes.find(r => r.name === menuTree[i].name);
+    if (route) {
+      menuList.push(route);
+      store.setMenuItem(menuTree[i], 'key', route.path);
+    }
     if(menuTree[i].subs && menuTree[i].subs.length>0){
       getMenuList(menuTree[i].subs,menuList);
     }
   }
 };
 //获取当前用户所有可以访问的路由权限
-const getRoutes = (routeList,menuTree) => {
+const getRoutes = (menuTree) => {
   let menuList =[];
   getMenuList(menuTree,menuList);
-  return menuList.map(v=>{
-    let route = routeList.find(r => r.path === v.key);
-    return route?route:false;
-  }).filter(v=>!!v);
+  return menuList;
 };
 const whiteList = ['/login'] // no redirect whitelist
 
@@ -42,9 +43,8 @@ router.beforeEach(async(to, from, next) => {
           let res = await sendUserInfo()
           if($iscode(res)){
             store.setUserInfo(res.data);
-            let routesMap = getRoutes(ruleRoutes,res.data.menus)
+            let routesMap = getRoutes(res.data.menus)
             router.$addRoutes(routesMap);
-            console.log('login');
             next({ ...to, replace: true });
           }else {
             localStorage.clear();

@@ -92,10 +92,10 @@ export default {
   },
   methods: {
     menuClick() {
-      this.$store.dispatch('app/setAppMenuToggle',!this.menuToggle);
+      store.setAppMenuToggle(!this.menuToggle);
     },
     toggleLanguage(lang){
-      this.$store.dispatch('app/setAppLanguage',lang);
+      store.setAppLanguage(lang);
     },
     async loginOut() {
       try{

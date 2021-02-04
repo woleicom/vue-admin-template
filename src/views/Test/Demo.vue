@@ -25,17 +25,15 @@
           <a-button type="default" @click='pageSearchReset'>重置</a-button>
         </a-form-item>
       </a-form>
-      <a-table
+      <HTable
+        :width='2000'
         :pagination='false' 
         :loading='listLoading'
         bordered
         rowKey='id' 
         :columns='columns' 
-        :data-source='data'></a-table>
-      <a-pagination 
-        :style="{marginTop:'10px',textAlign:'right'}" 
-        show-size-changer 
-        show-quick-jumper
+        :data-source='data'></HTable>
+      <HPage
         :current="search.page" 
         :page-size="search.size" 
         :total="total" 
@@ -53,6 +51,8 @@ import {setPageState,getPageState} from '@/utils/pageState'
 import {getList} from '@/api/demo'
 import {$iscode} from '@/utils/app'
 import AddModal from './AddModal.vue'
+import HTable from '@/components/HTable'
+import HPage from '@/components/HPage'
 // 初始化默认筛选项数值
 let defSearch = {
   name1: '',
@@ -63,7 +63,9 @@ let defSearch = {
 export default {
   name: 'Demo',
   components: {
-    AddModal
+    AddModal,
+    HTable,
+    HPage
   },
   setup(props) {
     const AddModal = ref(null)

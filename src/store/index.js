@@ -11,6 +11,9 @@ export default {
       info: {}
     }
   }),
+  setMenuItem(item, key, value) {
+    item[key] = value;
+  },
   setAppLanguage(language) {
     this.state.app.language = language;
   },

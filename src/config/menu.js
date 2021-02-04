@@ -1,43 +1,43 @@
 const menu = [
     {
-        key: '/index',
+        name: 'Index',
         title: '首页',
         icon: 'HomeOutlined',
     },
     {
         title: 'Test',
-        key: '/test',
+        name: 'Test',
         icon: 'BarsOutlined',
         subs: [
             {
                 title: 'Test1',
-                key: '/test/test1',
+                name: 'Test1',
                 icon: '',
             },
             {
                 title: 'Test2',
-                key: '/test/test2',
+                name: 'Test2',
                 icon: '',
                 subs: [
-                    { title: 'Test21', key: '/test/test2/test21', icon: '' },
-                    { title: 'Test22', key: '/test/test2/test22', icon: '' },
+                    { title: 'Test21', name: 'Test21', icon: '' },
+                    { title: 'Test22', name: 'Test22', icon: '' },
                 ]
             }
         ]
     },
     {
         title: 'Demo',
-        key: '/demo',
+        name: 'Demo1',
         icon: 'BarsOutlined',
         subs: [
             {
                 title: 'Demo',
-                key: '/demo/demo',
+                name: 'Demo',
                 icon: '',
                 subs: [
                     {
                         title: 'Detail',
-                        key: '/demo/demo/detail',
+                        name: 'Detail',
                         hidden: true
                     }
                 ]
